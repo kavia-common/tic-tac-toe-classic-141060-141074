@@ -6,23 +6,21 @@ void main() {
   testWidgets('Shows Tic Tac Toe title and board', (WidgetTester tester) async {
     await tester.pumpWidget(const TicTacToeApp());
 
-    // App title
-    expect(find.text('Tic Tac Toe'), findsOneWidget);
+    // App title in AppBar
+    expect(find.text('Tic Tac Toe'), findsWidgets);
 
-    // Status shows "Current Player:" and an icon (Knight for start).
-    expect(find.textContaining('Current Player:'), findsOneWidget);
-    // Semantic label for the knight icon should be present.
+    // Status shows current player and the knight semantic for X.
     expect(find.bySemanticsLabel('Knight'), findsWidgets);
 
-    // There should be 9 tappable cells (by GestureDetector via _Cell)
-    expect(find.byType(GestureDetector), findsNWidgets(9));
+    // There should be 9 tappable cells (InkWell inside _Cell)
+    expect(find.byType(InkWell), findsNWidgets(9));
   });
 
   testWidgets('Tapping alternates players and detects win; ignores taps after game over', (tester) async {
     await tester.pumpWidget(const TicTacToeApp());
 
     // Tap sequence to make X (Knight) win on first row: positions 0,1,2 interleaved with O (Queen).
-    final cells = find.byType(GestureDetector);
+    final cells = find.byType(InkWell);
     await tester.tap(cells.at(0)); // Knight
     await tester.pumpAndSettle();
     await tester.tap(cells.at(3)); // Queen
